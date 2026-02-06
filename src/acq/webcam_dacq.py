@@ -16,7 +16,7 @@ from cloudChamberCommonCode import rawDataFileName
 storeImage = True
 waitTime = .01  # Sleep in sec.
 
-#camera test to look for the goodi id
+#camera test to look for the good id
 #for i in range (0, 32):
 #  camera_test = cv2.VideoCapture(i)
 #  camera_test.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
