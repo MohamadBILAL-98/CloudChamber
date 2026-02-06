@@ -2,6 +2,11 @@ import os
 import numpy as np
 import cv2 as cv
 import glob
+import sys
+# caution: path[0] is reserved for script path (or '' in REPL)
+# path[1] in the directory where cloudChamberCommonCode can be
+sys.path.insert(1, "../")
+
 
 # my_logger
 from cloudChamberCommonCode import my_logger
@@ -18,12 +23,9 @@ from cloudChamberCommonCode import interestArea_x2
 from cloudChamberCommonCode import interestArea_y2
 from cloudChamberCommonCode import iImageIIntegral
 from cloudChamberCommonCode import iImageFIntegral
-from cloudChamberCommonCode import fname
+from cloudChamberCommonCode import damierFileName
 from cloudChamberCommonCode import nx
 from cloudChamberCommonCode import ny
-
-# Filtering Processing Parameters
-from cloudChamberCommonCode import timePeriod
 
 #termination criteria
 criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 30, 0.001)
@@ -40,9 +42,9 @@ imgpoints = [] # 2d points in image place
 images = glob.glob('*.jpeg') #get the images path
 #print(images)
 
-if (fname != "noCorrection") : 
-    my_logger.info("Reference for chessboard correction %s" %(fname))
-    img = cv.imread(fname) #load the image 
+if (damierFileName != "noCorrection") : 
+    my_logger.info("Reference for chessboard correction %s" %(damierFileName))
+    img = cv.imread(damierFileName) #load the image 
     gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY) #convert an image from BGR (Blue Green Red) 2 (to) GRAY
     invert_gray = 255 - gray #invert the black&white image (help with detection of chessboard corner because background must be white)
 
@@ -59,7 +61,7 @@ if (fname != "noCorrection") :
 
         # Draw and display the corners
         cv.drawChessboardCorners(img, (nx,ny), corners2, ret) #drawing the chessboard corners
-        newfname = fname.replace('.jpeg', '_CBC.jpeg') #new file name CBC for ChessBoardCorners
+        newfname = damierFileName.replace('.jpeg', '_CBC.jpeg') #new file name CBC for ChessBoardCorners
         cv.imwrite(newfname, img) #saving the image'''
         my_logger.info("Corners for chessboard correction %s" %(newfname))
 
@@ -82,16 +84,16 @@ if (fname != "noCorrection") :
         dst = cv.undistort(gray, mtx, dist, None, mtx)
         #x, y, w, h = roi
         #dst = dst[y:y+h, x:x+w]
-        newfname = fname.replace('.jpeg', '_Corrected.jpeg') #new file name Corrected for ChessBoardCorners
+        newfname = damierFileName.replace('.jpeg', '_Corrected.jpeg') #new file name Corrected for ChessBoardCorners
         cv.imwrite(newfname, dst)
-        newfname2 = fname.replace('.jpeg', '_CorrectedSelected.jpeg') #new file name Corrected for ChessBoardCorners
-        my_logger.info("Corrected chessboard image save in %s" %(fname))
+        newfname2 = damierFileName.replace('.jpeg', '_CorrectedSelected.jpeg') #new file name Corrected for ChessBoardCorners
+        my_logger.info("Corrected chessboard image save in %s" %(damierFileName))
         cv.imwrite(newfname2, dst[interestArea_y1:interestArea_y2,interestArea_x1:interestArea_x2])
 
 my_logger.info("Data %s" %(rawDataDirectory))
 my_logger.info("Files are %s" %(rawDataFileName))
 
-if ((fname != "noCorrection") and ret ) :
+if ((damierFileName != "noCorrection") and ret ) :
     my_logger.info("Correcting images from %4d to %4d" %(iImageIIntegral, iImageFIntegral))
 else :
     my_logger.info("NO-correction images from %4d to %4d" %(iImageIIntegral, iImageFIntegral))
@@ -102,17 +104,18 @@ iImage = iImageIIntegral
 while (iImage < iImageFIntegral ) :
     # Loading raw image
     img = io.read(iImage)
-    if (iImage%timePeriod ==0 ) : 
-        if ((fname != "noCorrection") and ret ) :
-            my_logger.info("Creating aberration corrected image  %4d" %(iImage))
-        else :
-            my_logger.info("Creating no-aberration corrected image  %4d" %(iImage))
-    
-    if ((fname != "noCorrection") and ret ) :
-        dst = cv.undistort(img, mtx, dist, None, mtx)
+     
+    if ((damierFileName != "noCorrection") and ret ) :
+        my_logger.info("Creating aberration corrected image  %4d" %(iImage))
     else :
+        my_logger.info("Creating NO-ABERRATION corrected image  %4d" %(iImage))
+    
+    if ((damierFileName != "noCorrection") and ret ) :
+        dst = cv.undistort(img, mtx, dist, None, mtx)
+        correctedFileName = io.dir + "aber_"+ io.fileTemplate.format(iImage)
+    else :
+        correctedFileName = io.dir + "noaber_"+ io.fileTemplate.format(iImage)
         dst = img
-    correctedFileName = io.dir + "aber_"+ io.fileTemplate.format(iImage)
     cv.imwrite(correctedFileName, dst[interestArea_y1:interestArea_y2,interestArea_x1:interestArea_x2])
     iImage=iImage+1
 
