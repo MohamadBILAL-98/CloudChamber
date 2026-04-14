@@ -16,25 +16,32 @@ my_logger=logging.getLogger()
 #rawDataFileName = "img_"  
 #rawDataDirectory = "../DACQ_1807/"
 #rawDataFileName = "img_C1_"  
-rawDataDirectory = "../../data/acq-currentdata/"
+
+# 1. Image Data Taking
+rawDataDirectory = "../../data/acq-testdata/"
 rawDataFileName = "img_C1_"  
 
 # Web camera calibration from aberration corrections and chessboard image July 2024
 calibrationFactor = 0.44 # mm per pixel
 
-# 1. Chessboard processing Parameters 
-fname = "noCorrection"
-#fname = "../ImageDamier_FullResolution/Damier_FullResolution.jpeg"
+# 2. Chessboard processing Parameters 
+#damierFileName = "noCorrection"
+damierFileName = "../../data/ImageDamier_FullResolution/Damier_FullResolution.jpeg"
 #dimension of the chessboard
 nx = 19 #number of chessboard corner in x 
 ny = 19 #number of chessboard corner in y
 
 # Interest area in the chessboard processing code 
-# DACQ juillet 2024
+# Standard fiducial area of the image
 interestArea_x1 = 650 # Parameter zone of interest in the image x1 in pixels
 interestArea_y1 = 60 # Parameter zone of interest in the image y1
 interestArea_x2 = 1260 # Parameter zone of interest in the image x2 : Warning x2 and y2 are lx and ly
 interestArea_y2 = 1030 # Parameter zone of interest in the image y2
+# DACQ juillet 2024
+#interestArea_x1 = 650 # Parameter zone of interest in the image x1 in pixels
+#interestArea_y1 = 60 # Parameter zone of interest in the image y1
+#interestArea_x2 = 1260 # Parameter zone of interest in the image x2 : Warning x2 and y2 are lx and ly
+#interestArea_y2 = 1030 # Parameter zone of interest in the image y2
 # DACQ janvier 2024
 #interestArea_x1 = 105 # Parameter zone of interest in the image x1 in pixels
 #interestArea_y1 = 135 # Parameter zone of interest in the image y1
@@ -44,12 +51,15 @@ interestArea_y2 = 1030 # Parameter zone of interest in the image y2
 # Files to be processed
 #iImageIIntegral = 0 
 #iImageFIntegral = 2460 # DACQ_220124
-iImageFIntegral = 6005 # DACQ_1807
+#iImageFIntegral = 6005 # DACQ_1807
 #iImageFIntegral = 3419 # DACQ_1807_two_camera_poire
+iImageIIntegral = 0    # testdata
+iImageFIntegral = 1000 # testdata
 
-# 2. Filtering and clustering Processing Parameters
-iImageI = 10 # Parameter first image  
-iImageF = 5925 # Parameter last image
+
+# 3. Filtering and clustering Processing Parameters
+iImageI = 100 # Parameter first image  
+iImageF = 900 # Parameter last image
 
 # Background Estimation Parameters
 seuilDiff = 20 # Parameter : pixel intensity difference threshold
@@ -61,18 +71,13 @@ seuil = 70 # Parameter Threshold for binarization
 
 # Calculation of the occupancy
 #imagesPerSecond = 1.94 # January 18 2024, see output of chessboard correction processing
-imagesPerSecond = 1.84 # July 18 2024, see output of chessboard correction processing
+#imagesPerSecond = 1.84 # July 18 2024, see output of chessboard correction processing
 #imagesPerSecond = 5.60  # Two camera poire July 18 2024
-filteringOption = 1 # !=0 default, 0 for doing only control plots
-deltaTimeStep = 6
-integrationTime = 100 * deltaTimeStep # in images
-
-# Interest area for DACQ_220124/, not used when chessboard correction used
-#interestArea_x1 = 120 # Parameter zone of interest in the image x1 in pixels
-#interestArea_y1 = 110 # Parameter zone of interest in the image y1
-#interestArea_x2 = 240 # Parameter zone of interest in the image x2 : Warning x2 and y2 are lx and ly
-#interestArea_y2 = 420 # Parameter zone of interest in the image y2
-
+imagesPerSecond = 1.83 # As calculated during the previous correction step
+filteringOption = 0 # !=0 default, 0 for doing only control plots
+deltaTimeStep = 10. # in images, integer
+integrationTime = 10. * deltaTimeStep # in images, integer
+occupancyFittingOption = "cons" # or exp
 
 # 3. Raw Clustering Processing Parameters
 # cluster size threshold
