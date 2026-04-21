@@ -1,6 +1,7 @@
 # Building
 
 import sys
+sys.path.insert(1, "../")
 import logging
 import os
 import cv2

@@ -1,6 +1,7 @@
 # Building
 
 import sys
+sys.path.insert(1, "../")
 import logging
 import os
 import cv2
@@ -8,6 +9,7 @@ import numpy as np
 import math
 import pickle
 import matplotlib.pyplot as plt
+
 
 # my_logger
 from cloudChamberCommonCode import my_logger
