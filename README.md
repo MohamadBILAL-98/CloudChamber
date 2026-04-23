@@ -46,6 +46,7 @@ Main parameters include:
 - - interestArea_x1 = 650, interestArea_x2 = 1260,
 - - interestArea_y1 = 60, interestArea_y2 = 1030,
 - - coronaSize = 25, border exclusion
+
 This file must be adapted for each experimental setup and dataset.
 
 ## Image Data Taking
@@ -85,24 +86,33 @@ filteringProcess.py  performs :
 ## Merging fragmented clusters
 - In src/rec/, the script mergingFragmentedClusterProcess.py is used to merge clusters that belong to the same physical track but were initially detected as separate fragments in rawClusteringData.dat.
 - The idea is that a single particle track can appear split into multiple pieces, so this step reconstructs the full track by merging consistent fragments. To decide whether two clusters should be merged, the algorithm checks both their spatial and directional consistency.
-- A key step is computing the perpendicular distance from a point to a cluster direction line, given by:
-$$
-d = | -\sin(\theta)(x - x_0) + \cos(\theta)(y - y_0) |
-$$
+- A key step is computing the perpendicular distance from a point to a cluster direction line:
+
+  $$
+  d = | -\sin(\theta)(x - x_0) + \cos(\theta)(y - y_0) |
+  $$
   A small value means the point is close to the track direction, while a large value means it is not related to that cluster.
 - The algorithm loops over all images and builds a clusterMergedList, which contains the final merged clusters. A mergedClusterNumberList is also used to ensure that the same cluster is not merged multiple times.
 - For each reference cluster, the algorithm compares it with other clusters. Only clusters that are not already merged and are physically valid are considered. Each cluster is described using its center position (x, y) and its angle, which defines the track direction.
+
 - Two clusters are merged if they satisfy three main conditions:
-- - the are close in space: 
-$$
-d = \sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2}
-$$
-- - they have similar direction (small angle difference) : 
-$$
-\Delta \theta = |\theta_1 - \theta_2|
-$$
-- - and they lie along the same track line based on the perpendicular distance test.
+
+  - They are close in space:
+
+    $$
+    d = \sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2}
+    $$
+
+  - They have similar direction (small angle difference):
+
+    $$
+    \Delta \theta = |\theta_1 - \theta_2|
+    $$
+
+  - They lie along the same track line based on the perpendicular distance test.
+
 - When these conditions are satisfied, the clusters are merged by combining their pixel lists into a single larger cluster. The merged cluster is then marked so it cannot be reused again.
+
 - Finally, after merging, the properties of the new cluster are recomputed, including its main direction, size, and width, to better represent the full physical track.
 
 ## Removing correlated clusters
@@ -117,18 +127,25 @@ $$
 - In src/rec/, the script distributionProcess.py performs the final selection and physical analysis of reconstructed clusters.
 - At this stage, only clusters with good quality are kept. Cuts are applied on cluster properties such as minimum valid length and shape consistency. In addition, clusters located near the image borders are removed because edge regions are more noisy and lead to unreliable detections.
 - Total number of detected particles: the total number of reconstructed clusters is counted over all processed images:
-$$
-N_{\text{total}}
-$$
-- Merged Ratio: the merging efficiency is evaluated using the fraction of clusters that were merged during reconstruction:
+
   $$
-R_{\text{merged}} = \frac{N_{\text{total}} - N_{\text{final}}}{N_{\text{total}}}
+  N_{\text{total}}
   $$
-This ratio indicates how fragmented the initial detection was a high value means many fragmented tracks were merged and a low value indicates clean and well-separated detections.
+
+- Merged ratio: the merging efficiency is evaluated using the fraction of clusters that were merged during reconstruction:
+
+  $$
+  R_{\text{merged}} = \frac{N_{\text{total}} - N_{\text{final}}}{N_{\text{total}}}
+  $$
+
+  This ratio indicates how fragmented the initial detection was.  
+  A high value means many fragmented tracks were merged, while a low value indicates clean and well-separated detections.
+
 - Cluster rate (particle rate): the particle detection rate is computed as the number of clusters per second:
-$$
-R_{\text{cluster}} = \frac{N_{\text{total}}}{N_{\text{images}}} \times f_{\text{fps}}
-$$
+
+  $$
+  R_{\text{cluster}} = \frac{N_{\text{total}}}{N_{\text{images}}} \times f_{\text{fps}}
+  $$
 where:Nimages is the number of processed images, ffps is the camera frame rate (images per second)
 This gives the physical particle rate in particles per second.
 - This final step transforms raw reconstructed tracks into physically meaningful observables. It ensures that only reliable clusters are used for analysis and provides global quantities such as particle rate, merging efficiency, and spatial distributions, which are essential for the final physical interpretation of the experiment.
