@@ -4,20 +4,10 @@ Python code to take images of a cloud chamber and to analyse them: optical corre
 ## Experimental Setup and Preparation
 Before using the code, the experimental setup must be carefully prepared:
 - The cloud chamber must be cleaned thoroughly:
-- - glass surface
-- - internal volume (cloud)
-- - electrical wires and components
-    To reduce noise and unwanted traces
-- The webcam must be correctly positioned:
-- - the image is rectangular
-- - the full field of view must include the calibration chessboard (damier)
-- - check alignment before data taking
-- The system must be protected from external light:
-- - use a cover on the cloud chamber
-- - in practice (Subatech), the cover is not sufficient
-- Additional protection is required:
-- - paper or cardboard around the setup, especially around the chessboard area
-This is critical to reduce background noise ("bruit de fond")
+   Glass surface, internal volume (cloud), electrical wires and components. To reduce noise and unwanted traces.
+- The webcam must be correctly positioned: the image is rectangular, the full field of view must include the calibration chessboard (damier) and check alignment before data taking.
+- The system must be protected from external light: use a cover on the cloud chamber, in practice (Subatech), the cover is not sufficient.
+- Additional protection is required: paper or cardboard around the setup, especially around the chessboard area. This is critical to reduce background noise ("bruit de fond").
 
 ## Configuration data
 The code cloudChamberCommonCode.py defined all data that configures a given data taking period and analysis.
@@ -25,27 +15,27 @@ This file contains all the parameters used for: image processing, filtering, clu
 Main parameters include: 
 - Calibration: calibrationFactor = 0.44 (pixel → mm conversion)
 - Filtering:
-- - seuil = 70, binarization threshold (pixel > seuil → white and pixel < seuil → black)
-- - seuilDiff = 20, background subtraction threshold
-- - timePeriod = 60, timeStep = 6, background computation to detect only the moving particles
+    seuil = 70, binarization threshold (pixel > seuil → white and pixel < seuil → black)
+    seuilDiff = 20, background subtraction threshold
+    timePeriod = 60, timeStep = 6, background computation to detect only the moving particles
 - Clustering
-- - clusterSizeThreshold =45, the minimum cluster size to be analyzed
+    clusterSizeThreshold =45, the minimum cluster size to be analyzed
 - Merging: 
-- - maxLinePointDistance = 4.
-- - maxRelativeAngle = 25.
-- - maxRelativeDistance = 50.
+    maxLinePointDistance = 4.
+    maxRelativeAngle = 25.
+    maxRelativeDistance = 50.
     To keep clusters that resemble real particle tracks and reject noise
 - Correlation removal
-- - maxCorrelatedRelativeDistance = 75.
-- - maxCorrelatedRelativeAngle = 25.
+    maxCorrelatedRelativeDistance = 75.
+    maxCorrelatedRelativeAngle = 25.
     To link clusters across images to track particles over time
 - Selection:
-- - goodCluster(): quality criteria
-- - minLength = 15, maxLength = 80 for the track selection
+    goodCluster(): quality criteria
+    minLength = 15, maxLength = 80 for the track selection
 - Fiducial volume
-- - interestArea_x1 = 650, interestArea_x2 = 1260
-- - interestArea_y1 = 60, interestArea_y2 = 1030
-- - coronaSize = 25, border exclusion
+    interestArea_x1 = 650, interestArea_x2 = 1260
+    interestArea_y1 = 60, interestArea_y2 = 1030
+    coronaSize = 25, border exclusion
 
 This file must be adapted for each experimental setup and dataset.
 
@@ -87,8 +77,7 @@ filteringProcess.py  performs :
 - In src/rec/, the script mergingFragmentedClusterProcess.py is used to merge clusters that belong to the same physical track but were initially detected as separate fragments in rawClusteringData.dat.
 - The idea is that a single particle track can appear split into multiple pieces, so this step reconstructs the full track by merging consistent fragments. To decide whether two clusters should be merged, the algorithm checks both their spatial and directional consistency.
 - A key step is computing the perpendicular distance from a point to a cluster direction line:
-
- $d = \left| -\sin(\theta)(x - x_0) + \cos(\theta)(y - y_0) \right|$
+  $d = \left| -\sin(\theta)(x - x_0) + \cos(\theta)(y - y_0) \right|$
 
 A small value means the point is close to the track direction, while a large value means it is not related to that cluster.
 - The algorithm loops over all images and builds a clusterMergedList, which contains the final merged clusters. A mergedClusterNumberList is also used to ensure that the same cluster is not merged multiple times.
