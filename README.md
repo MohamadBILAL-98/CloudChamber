@@ -85,13 +85,9 @@ A small value means the point is close to the track direction, while a large val
 
 - Two clusters are merged if they satisfy three main conditions:
 
-- They are close in space:
+- They are close in space: $d = \sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2}$
 
-  $d = \sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2}$
-
-  - They have similar direction (small angle difference):
-
-  $\Delta \theta = |\theta_1 - \theta_2|$
+- They have similar direction (small angle difference): $\Delta \theta = |\theta_1 - \theta_2|$
 
 - They lie along the same track line based on the perpendicular distance test.
 
@@ -110,12 +106,9 @@ A small value means the point is close to the track direction, while a large val
 ## Final Distribution Analysis
 - In src/rec/, the script distributionProcess.py performs the final selection and physical analysis of reconstructed clusters.
 - At this stage, only clusters with good quality are kept. Cuts are applied on cluster properties such as minimum valid length and shape consistency. In addition, clusters located near the image borders are removed because edge regions are more noisy and lead to unreliable detections.
- - Total number of detected particles: the total number of reconstructed clusters is counted over all processed images:
+ - Total number of detected particles: the total number of reconstructed clusters is counted over all processed images: $N_{\text{total}}$
 
-    $N_{\text{total}}$
-
-- Merged ratio: the merging efficiency is evaluated using the fraction of clusters that were merged during reconstruction:
-
+- Merged ratio: the merging efficiency is evaluated using the fraction of clusters that were merged during reconstruction: 
   $R_{\text{merged}} = (N_{\text{total}} - N_{\text{final}}) / N_{\text{total}}$
 
   This ratio indicates how fragmented the initial detection was.  
