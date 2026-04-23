@@ -88,9 +88,7 @@ filteringProcess.py  performs :
 - The idea is that a single particle track can appear split into multiple pieces, so this step reconstructs the full track by merging consistent fragments. To decide whether two clusters should be merged, the algorithm checks both their spatial and directional consistency.
 - A key step is computing the perpendicular distance from a point to a cluster direction line:
 
-$
-d = \left| -\sin(\theta)(x - x_0) + \cos(\theta)(y - y_0) \right|
-$
+$d = \left| -\sin(\theta)(x - x_0) + \cos(\theta)(y - y_0) \right|$
 
 A small value means the point is close to the track direction, while a large value means it is not related to that cluster.
 - The algorithm loops over all images and builds a clusterMergedList, which contains the final merged clusters. A mergedClusterNumberList is also used to ensure that the same cluster is not merged multiple times.
