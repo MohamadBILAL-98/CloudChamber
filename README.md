@@ -86,7 +86,7 @@ A small value means the point is close to the track direction, while a large val
 - Two clusters are merged if they satisfy three main conditions:
 
 - They are close in space: 
-  $d = \sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2}$
+  $$d = \sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2}$$
 
 - They have similar direction (small angle difference): $\Delta \theta = |\theta_1 - \theta_2|$
 
