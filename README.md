@@ -85,7 +85,8 @@ A small value means the point is close to the track direction, while a large val
 
 - Two clusters are merged if they satisfy three main conditions:
 
-- They are close in space: $d = \sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2}$
+- They are close in space: 
+  $d = \sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2}$
 
 - They have similar direction (small angle difference): $\Delta \theta = |\theta_1 - \theta_2|$
 
@@ -119,7 +120,6 @@ A small value means the point is close to the track direction, while a large val
   $R_{\text{cluster}} = (N_{\text{total}} / N_{\text{images}}) \times f_{\text{fps}}$
 
   where:  
-  $N_{\text{images}}$ is the number of processed images,  
-  $f_{\text{fps}}$ is the camera frame rate (images per second).
+  $N_{\text{images}}$ is the number of processed images, $f_{\text{fps}}$ is the camera frame rate (images per second).
 This gives the physical particle rate in particles per second.
 - This final step transforms raw reconstructed tracks into physically meaningful observables. It ensures that only reliable clusters are used for analysis and provides global quantities such as particle rate, merging efficiency, and spatial distributions, which are essential for the final physical interpretation of the experiment.
