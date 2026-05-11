@@ -1,7 +1,7 @@
-#Experiment - mesure du Radon: 
+#Experiment - Source - Alpha: 
 # 1- Data paths: 
 data:
-  rawDataDirectory: "../../data/acq-testdata-04-05-2026-HighVoltage/"
+  rawDataDirectory: "../../data/acq-testdata-11-05-2026-Source-Alpha/"
   rawDataFileName: "img_C1_"
 
 # 2- Camera-Calibration
