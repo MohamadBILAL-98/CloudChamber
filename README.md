@@ -73,7 +73,7 @@ filteringProcess.py  performs :
 - For the first execution, the filtering option is set to 1 to perform the full image processing (background computation, subtraction, binarization, and filtering). This step is necessary to generate clean data and reduce noise. The option 0 is only used afterward for faster analysis on already processed images (occupancy and fitting only).
 - The filtering step depends on the total number of images available in the dataset. To avoid index-out-of-range crashes when the number of images is not a clean multiple of the background time period, the last image index `iImageF` is computed automatically at runtime using the following logic:
 1. Scan the raw data directory and increment `iImageF` until no more image files are found.
-2. Subtract `2 × T_{\text{period}}` from the detected count to leave a safe margin at the end and prevent the background computation from jumping over the last available images.
+2. Subtract $2 \times T_{\text{period}}$ from the detected count to leave a safe margin at the end and prevent the background computation from jumping over the last available images.
 
 $$
 i_{\text{ImageF}} = N_{\text{detected}} - 2 \times T_{\text{period}}
