@@ -1,7 +1,7 @@
-#Experiment - mesure du Radon: 
+#Experiment - Source - Uranium: 
 # 1- Data paths: 
 data:
-  rawDataDirectory: "../../data/acq-testdata-23-04-2026-mesure-du-Radon/"
+  rawDataDirectory: "../../data/acq-testdata-11-05-2026-Source-Uranium/"
   rawDataFileName: "img_C1_"
 
 # 2- Camera-Calibration
@@ -15,7 +15,7 @@ chessboard:
 
 # Interest area in the chessboard processing code 
 # Standard fiducial area of the image
-  interestArea_x1: 650  # Parameter zone of interest in the image x1 in pixels
+  interestArea_x1: 650 # Parameter zone of interest in the image x1 in pixels
   interestArea_y1: 60   # Parameter zone of interest in the image y1
   interestArea_x2: 1260 # Parameter zone of interest in the image x2 : Warning x2 and y2 are lx and ly
   interestArea_y2: 1030 # Parameter zone of interest in the image y2
@@ -23,7 +23,7 @@ chessboard:
 # 4- Image range:
 images:
   iImageIIntegral: 0
-  iImageFIntegral: 14000
+  iImageFIntegral: 5125
   iImageI: 0 # fisrt image: starting point for filtering
   #iImageF is auto-detected in cloudChamberCommonCode.py
   # It is set to the last available aber_ image minus 2 * timePeriod, to avoid potentia crashes.
